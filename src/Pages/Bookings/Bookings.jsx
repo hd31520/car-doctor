@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import BookingsTable from "./BookingsTable";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 
 const Bookings = () => {
@@ -43,6 +44,8 @@ const Bookings = () => {
     }
 
     const handleConfirm = id => {
+
+
         fetch(`http://localhost:5000/bookings/${id}`, {
             method: 'PATCH',
             headers: {
@@ -71,12 +74,17 @@ const Bookings = () => {
 
     const url = `http://localhost:5000/bookings?email=${user?.email}`;
     useEffect(() => {
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                setbookings(data);
-            })
+
+        axios.get(url, {withCredentials: true})
+        .then(res => {
+            setbookings(res.data);
+        })
+        // fetch(url)
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         setbookings(data);
+        //     })
     }, [url]);
 
 
